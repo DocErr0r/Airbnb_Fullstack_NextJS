@@ -2,6 +2,7 @@ import { errorHandler } from "@/app/middleware/errorhandler"
 import {Hotel} from '../../../../schema/hotelSchema'
 import { connectMongoDB } from "@/database/connection";
 import { LocationSuggestion } from "@/schema/locationSuggestionSchema"
+import { userAuth } from "@/app/middleware/userauth";
 export const POST = async(req: Request)=>{
     
 
@@ -20,45 +21,45 @@ export const POST = async(req: Request)=>{
     const image = [
         {
             public_id:1,
-            url:"https://a0.muscache.com/im/pictures/1a284fe1-9332-412d-9635-4fefb3ca124d.jpg?im_w=720",
+            url:"https://a0.muscache.com/im/pictures/01e13f3f-b1ae-4d74-a6a2-92330210e535.jpg?im_w=960",
 
         },
         {
             public_id:2,
-            url:"https://a0.muscache.com/im/pictures/7b204348-7b19-4228-981a-1ce7dabcad00.jpg?im_w=720",
+            url:"https://a0.muscache.com/im/pictures/miso/Hosting-21914859/original/68a8fc38-7e10-4454-8357-8dfdd37dd059.jpeg?im_w=1200",
 
         },
         {
             public_id:3,
-            url:"https://a0.muscache.com/im/pictures/1a6400e1-2a7f-4e34-a4ed-f685d88b6ed1.jpg?im_w=720",
+            url:"https://a0.muscache.com/im/pictures/91c92d67-9d1f-447f-8dda-9650213bfab1.jpg?im_w=1200",
 
         }
         ,
         {
             public_id:4,
-            url:"https://a0.muscache.com/im/pictures/7c997227-590e-4a2d-ad5f-8061437e6171.jpg?im_w=720",
+            url:"https://a0.muscache.com/im/pictures/e667391e-47ef-4c92-997d-b1509c7499b4.jpg?im_w=1200",
 
         },
         {
             public_id:5,
-            url:"https://a0.muscache.com/im/pictures/dfa5472f-d464-4767-b449-c695af5438ae.jpg?im_w=720",
+            url:"https://a0.muscache.com/im/pictures/ea28cbdf-943f-4ea2-9a30-c1607ebcdf98.jpg?im_w=1200",
 
         },
         ,
         {
             public_id:6,
-            url:"https://a0.muscache.com/im/pictures/d8d629d7-9307-4b24-a8ae-b01d95e36124.jpg?im_w=1200",
+            url:"https://a0.muscache.com/im/pictures/1ba6b34c-95b5-4899-b43f-8d87eb44ea52.jpg?im_w=1200",
 
         },
         {
             public_id:7,
-            url:"https://a0.muscache.com/im/pictures/876d422d-5537-4ea8-8b10-026e5d7bcfd5.jpg?im_w=1200",
+            url:"https://a0.muscache.com/im/pictures/a33dc3e5-c2f7-423f-b08f-0db74e04d248.jpg?im_w=1200",
 
         },
         
         {
             public_id:8,
-            url:"https://a0.muscache.com/im/pictures/b329e6cf-632b-48e9-a8ce-b6b02b42b987.jpg?im_w=720",
+            url:"https://a0.muscache.com/im/pictures/e4207c35-ca01-4859-8608-cc7c843d5f1f.jpg?im_w=1200",
 
         },
         
@@ -66,11 +67,13 @@ export const POST = async(req: Request)=>{
         
     ]
 
-
+     const user = await userAuth();
+     const hostName = user?.username;
 
     const hotel = await Hotel.create({
         image,
         title,
+        hostName,
         desc,
         category,
         hoteltype,selfcheckin,adults,children,infents,bedrooms,beds,bathrooms,hostlanguange,state,country,

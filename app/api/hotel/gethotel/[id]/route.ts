@@ -8,25 +8,23 @@ export const GET = async(req: Request,
 
     await connectMongoDB();
     const id = params.id ;
-    console.log(id);
+    // console.log(id);
       const _id = id;
     if(!_id){
         return errorHandler("Plese Enter Your Id ",403,false)
     }
      let hotel;
     try{
-     hotel = await Hotel.findById(id);
+     hotel = await Hotel.findById(_id);
     }catch{
         return errorHandler("Something went Wrong With Id",403,false);
     }
-    console.log(hotel);
+    // console.log(hotel);
 
     if(!hotel){
         return errorHandler("Hotel Not Found !",403,false)
     }
 
-  return   Response.json({
-       hotel
-    });
+  return   Response.json(hotel);
 
 }

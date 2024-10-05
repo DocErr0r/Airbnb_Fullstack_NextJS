@@ -20,7 +20,7 @@ export const GET = async () => {
 
         }
 
-        const allUsers = await User.find();
+        const allUsers = await User.find().select("-password -cpassword");
 
     
         return Response.json({

@@ -2,7 +2,7 @@ import { connectMongoDB } from "@/database/connection"
 import { errorHandler } from "@/app/middleware/errorhandler";
 import { Hotel } from "@/schema/hotelSchema";
 import { reportWebVitals } from "next/dist/build/templates/pages";
-export const PUT = async(req: Request,
+export const POST = async(req: Request,
     { params }: { params: { id: string } })=>{
     await connectMongoDB();
     const data = await req.json();
@@ -14,12 +14,24 @@ export const PUT = async(req: Request,
     }
      let hotel;
     try{
-     hotel = await Hotel.findByIdAndUpdate(id,data)
-     hotel = await Hotel.findOne({_id:id});
+       
+       
+       data.totalguest=    Number(data.infents)+Number(data.adults)+Number(data.children)
+        // data.totalguest = Number(data.adults)+Number(data.children)
+        // console.log("data totalguest",data.totalguest)
+     hotel = await Hotel.findByIdAndUpdate(id,data,{new:true})
+    
+    
+     if(!hotel){
+        return errorHandler("Hotel Not Found",404,false)
+     }
+
+     
+     
     }catch{
         return errorHandler("Something went Wrong With Id",403,false);
     }
-    console.log(hotel);
+    // console.log(hotel);
 
     if(!hotel){
         return errorHandler("Hotel Not Found !",403,false)

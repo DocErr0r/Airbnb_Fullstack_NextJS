@@ -1,27 +1,7 @@
-'use client'
-import React, { useState } from 'react'
-
+import React from 'react'
+import { FaUser } from "react-icons/fa";
 const page = () => {
-  const [email,setEmail] = useState('')
-  const [password,setPassword]=useState('')
-  const handlerLogin = async()=>{
-      const login ={
-        email: "tarunkatariaonline@gmail.com",
-        password:"tarun"
-      }
-      const res = await fetch('http://localhost:3000/api/user/login',{
-        method:"POST",
-        body:JSON.stringify(login),
-        headers: {
-          "Content-Type": "application/json",
-        }
-      })
-      const json =await res.json()
-      console.log(json)
-  }
   return ( 
-
-   
     <>
     <div className=' w-full flex justify-center h-12 items-center text-lg font-medium border-b-2'>
       Log in or sign up
@@ -31,18 +11,22 @@ const page = () => {
      
       <div className='  w-[400px] max-md:w-[90%] h-96 '>
         <p className=' text-2xl font-bold mb-3 '>Welcome to Airbnb</p>
-        
-      
+         <div className=' w-full h-16 flex justify-center items-center'>
+         <FaUser className=' text-4xl' />
+         </div>
+        <input type="file"  className=' w-full h-12 border-[1px] border-black outline-none rounded-md  my-4' />
+        <input type="text"  placeholder=' Enter Your Name' className=' w-full h-12 border-[1px] border-black outline-none rounded-md  my-4' />
         <input type="text"  placeholder=' Enter Your Email' className=' w-full h-12 border-[1px] border-black  outline-none rounded-md  my-4' />
+        <input type="text"  placeholder=' Enter Your Password' className=' w-full h-12 border-[1px] border-black  outline-none rounded-md  my-4' />
        
-        <input type="text"  placeholder=' Enter Your Password' className=' w-full h-12 border-[1px] border-black outline-none rounded-md  my-4' />
+        <input type="text"  placeholder=' Enter Your Confirm Password' className=' w-full h-12 border-[1px] border-black outline-none rounded-md  my-4' />
 
         <div className=' w-full flex justify-end my-4'>
-          <p className=' text-gray-500 cursor-pointer '>Forgot Password</p>
+          <p className=' text-gray-500 cursor-pointer '>Already have an account ?</p>
         </div>
 
      
-          <button onClick={handlerLogin} className=' w-full hover:bg-red-500 bg-red-600 h-12 rounded-md text-white font-bold'>Continue</button>
+          <button className=' w-full hover:bg-red-500 bg-red-600 h-12 rounded-md text-white font-bold'>Continue</button>
       
         <div className=' my-3 w-full h-12 rounded-md border-[1px] border-black flex items-center'>
           <img className=' w-6  m-4 ' src="https://yt3.googleusercontent.com/rhqKhfZPaVKRfPi1UvaoekFcSVkipICyGmshnUT9SYMR2JMI8G40YqtaOqz94Ao5rdu_NE0nAw=s900-c-k-c0x00ffffff-no-rj" alt="" />

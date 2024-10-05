@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from '../redux/features/counter/counterSlice'
+import queryparameterReducer from './features/queryparameter/queryparameterSlice'
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
+    queryParameter:queryparameterReducer
   },
 })
 

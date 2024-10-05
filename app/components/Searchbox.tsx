@@ -7,12 +7,16 @@ import { useState } from 'react';
 import 'react-multi-carousel/lib/styles.css';
 import {typesofhotel} from '@/app/utils/type'
 import { Switch } from '@chakra-ui/react'
-
+import { RootState } from '../redux/store';
 import { RxCross1 } from "react-icons/rx";
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 
 
 import { DateRange } from 'react-date-range';
+import Link from 'next/link';
+import { decrementAdults, decrementChildren, decrementInfents, incrementAdults, incrementChildren, incrementInfents, setDestination } from '../redux/features/queryparameter/queryparameterSlice';
 
 
 interface LocationSuggestionInterface {
@@ -20,6 +24,9 @@ interface LocationSuggestionInterface {
   locationSg:string
 }
 const Searchbox = () => {
+
+   const dispatch = useDispatch();
+   const queryparameters = useSelector((state:RootState)=>state.queryParameter)
 
     const today = new Date();
 
@@ -36,6 +43,8 @@ nextDay.setDate(today.getDate() + 2);
       key: 'selection'
     }
   ])
+
+ 
   const [showFilterBox,setShowFilterBox] = useState(false);
   const [showGuestBox,setShowGuestBox] = useState(false);
   const [showLanguageBox,setShowLanguageBox] = useState(false);
@@ -107,6 +116,8 @@ nextDay.setDate(today.getDate() + 2);
 
  const handlerSetSearchText = (text:string)=>{
     setSearchText(text)
+    dispatch(setDestination(text))
+    
  }
 
  const handlerControlInput = (e: React.ChangeEvent<HTMLInputElement>)=>{
@@ -229,7 +240,7 @@ nextDay.setDate(today.getDate() + 2);
 
      </div>
 
-     <button  className='  mx-3 flex justify-center items-center w-10 h-10 bg-red-500  rounded-full '><CiSearch className={"text-white text-2xl  font-extrabold"} /></button>
+  <Link href={`/search?destination=${queryparameters.destination}&adults=${queryparameters.adults}&children=${queryparameters.children}&beds=${queryparameters.beds}&category=${queryparameters.category}&bedrooms=${queryparameters.bathrooms}&start=${date[0].startDate.toISOString().slice(0,10)}&end=${date[0].endDate.toISOString().slice(0,10)}&minprice=${queryparameters.minprice}&maxprice=${queryparameters.maxprice}`}>  <button  className='  mx-3 flex justify-center items-center w-10 h-10 bg-red-500  rounded-full '><CiSearch className={"text-white text-2xl  font-extrabold"} /></button> </Link> 
 
     
 
@@ -239,9 +250,7 @@ nextDay.setDate(today.getDate() + 2);
 
 
    {/* show suggestion box */}
-
-
-    {(showSuggestionBox && (locationSuggestion)?locationSuggestion.length!==0:"") ?<div className={` w-96   max-h-96 absolute     top-52  z-50 mt-1    py-6 left-40 rounded-3xl  bg-white   shadow-2xl   shadow-black  overflow-y-auto`}>
+    {(showSuggestionBox && (locationSuggestion)?locationSuggestion.length!==0:"") ?<div className={` w-96   max-h-96 absolute     top-36  z-50 mt-1    py-6 left-40 rounded-3xl  bg-white   shadow-2xl   shadow-black  overflow-y-auto`}>
  
 
  {locationSuggestion&&locationSuggestion.map((suggestion)=>{
@@ -283,6 +292,7 @@ nextDay.setDate(today.getDate() + 2);
 
 
 
+
            {/* searchBoxMobile */}
 
 
@@ -307,9 +317,9 @@ nextDay.setDate(today.getDate() + 2);
        <p className='  text-sm text-gray-400'>Age 13 or above</p>
       </div>
       <div className=' flex items-center justify-between '>
-        <button className=' h-8 w-8 border-1 rounded-full '>-</button>
-        <p className=' h-8 w-8  flex items-center justify-center'>3</p>
-        <button className=' h-8 w-8 border-1 rounded-full '>+</button>
+        <button className=' h-8 w-8 border-1 rounded-full ' onClick={()=>dispatch(decrementAdults())}>-</button>
+        <p className=' h-8 w-8  flex items-center justify-center'>{queryparameters.adults}</p>
+        <button className=' h-8 w-8 border-1 rounded-full ' onClick={()=>dispatch(incrementAdults())}>+</button>
       </div>
       </div>
    <hr />
@@ -321,9 +331,9 @@ nextDay.setDate(today.getDate() + 2);
        <p className='  text-sm text-gray-400'>Age 2-12</p>
       </div>
       <div className=' flex items-center justify-between '>
-        <button className=' h-8 w-8 border-1 rounded-full '>-</button>
-        <p className=' h-8 w-8  flex items-center justify-center'>3</p>
-        <button className=' h-8 w-8 border-1 rounded-full '>+</button>
+        <button className=' h-8 w-8 border-1 rounded-full ' onClick={()=>dispatch(decrementChildren())}>-</button>
+        <p className=' h-8 w-8  flex items-center justify-center'>{queryparameters.children}</p>
+        <button className=' h-8 w-8 border-1 rounded-full ' onClick={()=>dispatch(incrementChildren())}>+</button>
       </div>
       </div>
 
@@ -338,9 +348,9 @@ nextDay.setDate(today.getDate() + 2);
        <p className='  text-sm text-gray-400'>Under 2</p>
       </div>
       <div className=' flex items-center justify-between '>
-        <button className=' h-8 w-8 border-1 rounded-full '>-</button>
-        <p className=' h-8 w-8  flex items-center justify-center'>3</p>
-        <button className=' h-8 w-8 border-1 rounded-full '>+</button>
+        <button className=' h-8 w-8 border-1 rounded-full ' onClick={()=>dispatch(decrementInfents())}>-</button>
+        <p className=' h-8 w-8  flex items-center justify-center'>{queryparameters.infents}</p>
+        <button className=' h-8 w-8 border-1 rounded-full ' onClick={()=>dispatch(incrementInfents())}>+</button>
       </div>
       </div>
     </div>
@@ -396,9 +406,9 @@ nextDay.setDate(today.getDate() + 2);
 
    <div className=' bg-yellow- flex h-14 items-center justify-center p-2'>
     
-    <button className=' h-8 w-8 rounded-full text-2xl border-1 flex justify-center '>-</button>
-    <p className='h-8 w-8 rounded-full text-lg  flex justify-center mx-2 ' >1</p> 
-    <button className=' h-8 w-8 rounded-full text-2xl border-1 flex justify-center '>+</button>
+    <button className=' h-8 w-8 rounded-full text-2xl border-1 flex justify-center ' onClick={()=>dispatch(decrementAdults())}>-</button>
+    <p className='h-8 w-8 rounded-full text-lg  flex justify-center mx-2 ' >{queryparameters.adults}</p> 
+    <button className=' h-8 w-8 rounded-full text-2xl border-1 flex justify-center ' onClick={()=>dispatch(incrementAdults())}>+</button>
 
    </div>
 
@@ -413,9 +423,9 @@ nextDay.setDate(today.getDate() + 2);
 
    <div className=' bg-yellow- flex h-14 items-center justify-center p-2'>
     
-    <button className=' h-8 w-8 rounded-full text-2xl border-1 flex justify-center '>-</button>
-    <p className='h-8 w-8 rounded-full text-lg  flex justify-center mx-2 ' >1</p> 
-    <button className=' h-8 w-8 rounded-full text-2xl border-1 flex justify-center items-center '>+</button>
+    <button className=' h-8 w-8 rounded-full text-2xl border-1 flex justify-center ' onClick={()=>dispatch(decrementChildren())}>-</button>
+    <p className='h-8 w-8 rounded-full text-lg  flex justify-center mx-2 ' >{queryparameters.children}</p> 
+    <button className=' h-8 w-8 rounded-full text-2xl border-1 flex justify-center items-center ' onClick={()=>dispatch(incrementChildren())}>+</button>
 
    </div>
 
@@ -498,7 +508,7 @@ nextDay.setDate(today.getDate() + 2);
   
   {showCalender&&<div className=' max-md:hidden absolute  left-0 right-0   top-0  bottom-0  rounded-2xl z-50  flex justify-center  pt-0 items-center ' tabIndex={0} onFocus={handlerShowCalender}   >
       
-      <div className=' absolute top-52 ' tabIndex={0} onFocus={(e: React.FocusEvent<HTMLDivElement>)=>{
+      <div className=' absolute top-36 ' tabIndex={0} onFocus={(e: React.FocusEvent<HTMLDivElement>)=>{
              e.stopPropagation();
             }}>
       <DateRange  className=' rounded-2xl p-4  shadow-2xl'

@@ -1,5 +1,6 @@
 import { connectMongoDB } from "@/database/connection";
 import { Hotel } from "@/schema/hotelSchema"
+import { json } from "stream/consumers";
 
 interface DestinationInterface{
     $regex:string|null,
@@ -32,11 +33,16 @@ interface QueryObject  {
 export const GET = async(req:Request)=>{
     await connectMongoDB();
     const { searchParams } = new URL(req.url)
-    const destination = searchParams.get('destination')
-    const category = searchParams.get('category')
-    const hoteltype = searchParams.get('hoteltype')
-    const propertytype = searchParams.get('propertytype');
-    const selfcheckinString = searchParams.get('selfcheckin');
+    // console.log(searchParams)
+    const destination =  searchParams.get('destination')
+    const category =  searchParams.get('category')
+
+    const startDate =  searchParams.get('start')
+    const endDate =  searchParams.get('end')
+   
+    const hoteltype =  searchParams.get('hoteltype')
+    const propertytype =  searchParams.get('propertytype');
+    const selfcheckinString =  searchParams.get('selfcheckin');
     const maxPrice = Number(searchParams.get('maxprice')) || 10000000;
    
     const minPrice = Number(searchParams.get("minprice")) || 0;
@@ -57,7 +63,8 @@ export const GET = async(req:Request)=>{
   
     
 
-    console.log("adult : " + adults);
+//    console.log("Start Date : "+startDate)
+//    console.log("End Date : "+endDate)
   
     // console.log(maxPrice)
     // console.log(minPrice)
@@ -97,7 +104,7 @@ export const GET = async(req:Request)=>{
 
     
 const hotels = await Hotel.find(queryObject);
-
+// console.log(hotels[0].unavaiableDates)
 return Response.json(hotels);
 
 }

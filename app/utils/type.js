@@ -32,26 +32,12 @@
     {
         id:7,
         url:"https://a0.muscache.com/pictures/aaa02c2d-9f0d-4c41-878a-68c12ec6c6bd.jpg",
-        title:"Tiny"
+        title:"Banglow"
     },
     {
         id:8,
         url:"https://a0.muscache.com/pictures/aaa02c2d-9f0d-4c41-878a-68c12ec6c6bd.jpg",
-        title:"Tiny"
+        title:"Luxe"
     },
-    {
-        id:9,
-        url:"https://a0.muscache.com/pictures/aaa02c2d-9f0d-4c41-878a-68c12ec6c6bd.jpg",
-        title:"Tiny"
-    },
-    {
-        id:10,
-        url:"https://a0.muscache.com/pictures/aaa02c2d-9f0d-4c41-878a-68c12ec6c6bd.jpg",
-        title:"Tiny"
-    },
-    {
-        id:11,
-        url:"https://a0.muscache.com/pictures/aaa02c2d-9f0d-4c41-878a-68c12ec6c6bd.jpg",
-        title:"Tiny"
-    }
+   
 ]

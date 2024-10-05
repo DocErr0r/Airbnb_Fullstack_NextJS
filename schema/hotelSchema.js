@@ -55,6 +55,9 @@ const hotelSchema = new Schema({
     adults:{
         type:Number
     },
+    hostName:{
+       type:String
+    },
     children:{
         type:Number
     },
@@ -85,10 +88,10 @@ const hotelSchema = new Schema({
 
     reviews:[
         {
-            user:{
+            userid:{
                 type:String
             },
-            name:{
+            username:{
                 type:String,
                 
             },

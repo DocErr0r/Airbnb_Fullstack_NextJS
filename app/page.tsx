@@ -47,32 +47,98 @@ import { CiLocationOn } from "react-icons/ci";
 
 
 
-import {
-  Popover,
-  Button,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
-} from '@chakra-ui/react'
+
 import Card from './components/Card';
 import { Typography } from '@mui/material';
 import fetchhotels from './utils/fetchhotels';
 import Searchbox from './components/Searchbox';
+import Link from 'next/link';
+import Header from './components/Header';
 
+
+export interface HotelInterface{
+  _id:string,
+  
+  title:string,
+  hostid:string,
+  image:{public_id:string,url:string}[],
+  price:number,
+  beds:number,
+  rating:number,
+  category:string,
+  desc:string,
+  adults:number,
+  totalguest:number,
+  children:number,
+ destination:string,
+ hostName:string,
+ bedrooms:number,
+ bathrooms:number,
+ numofreview:number,
+ location: string;
+
+  hoteltype: string;
+  
+
+  propertytype: string;
+  selfcheckin: boolean;
+
+ state: string;
+ country: string;
+
+  infents: number;
+ overallrating:number,
+ 
+ city:string,
+ reviews:[{userid:string,username:string,
+  cleanliness:number,accuracy:number,checkin:number,communication:number,
+  location:number,value:number,comment:string,id:string}],
+  amenities:{
+
+wifi:boolean,
+
+kitchen:boolean,
+
+washingmachine:boolean,
+dryer:boolean,
+heating:boolean,
+dadicatedspace:boolean,
+tv:boolean,
+hairdryer:boolean,
+iron:boolean,
+pool:boolean,
+hottub:boolean,
+freeparking:boolean,
+cot:boolean,
+kingbed:boolean,
+gym:boolean,
+bbqgrill:boolean,
+indoorfirepace:boolean,
+smokealarm:boolean,
+carbonmonooxidealarm:boolean,
+breakfast:boolean
+  }
+}
 
 
 
 export default   function Home() {
 
+const [hotels,setHotels] = useState<HotelInterface[]|null>(null)
+const fetchHotels = async()=>{
+  const res = await fetch('http://localhost:3000/api/hotel/gethotels');
 
+  const json = await res.json();
+  console.log(json);
+  setHotels(json)
+ 
 
+}
 
-
+useEffect(()=>{
+   fetchHotels()
+  
+},[])
 
 
 const today = new Date();
@@ -133,38 +199,8 @@ nextDay.setDate(today.getDate() + 2);
 
   return (
     <div className='w-full  min-h-screen   bg-cyan-300    '>
-       <div className=' max-md:hidden h-16 w-full bg-gray-200 flex justify-center items-center  '>
-         <p  className=' content-center border-b-2 border-black'>Learn about Guest Favourites, the most loved homes on Airbnb</p>
-       </div>
-       <div className=' max-md:hidden w-full h-16   bg-white flex  justify-between items-center ' >
-
-         <div className='ml-4'>
-        <img className=' w-28' src='https://www.edigitalagency.com.au/wp-content/uploads/airbnb-logo-png-transparent-background.png'/>
-        </div>
-        
-        <div className=' mr-4 flex  items-center' >
-          <button className= ' p-2 rounded-full text-sm px-4 hover:bg-gray-100  '>Airbnb your home</button>
-          <CiGlobe onClick = {handlerShowLanguageBox} className=" text-4xl cursor-pointer  rounded-full p-2 hover:bg-gray-100  mx-2 " />
-         
-          <Popover>
-  <PopoverTrigger>
-  <div className=' w-20 h-10 px-2 cursor-pointer  rounded-3xl border-gray-400  border-1 hover:shadow-lg hover:bg-slate-50  justify-around  flex items-center mx-4 '>
-          <MdMenu className=" text-2xl     " />
-          <FaUser  />
-         
-          </div>
-  </PopoverTrigger>
-  <PopoverContent mr={"30px"}>
-    <PopoverArrow />
-    <PopoverCloseButton />
-    <PopoverHeader>Confirmation!</PopoverHeader>
-    <PopoverBody>Are you sure you want to have that milkshake?</PopoverBody>
-  </PopoverContent>
-</Popover>
-        
-        </div>
-       </div>
-
+      
+     
   
 
 
@@ -213,18 +249,16 @@ nextDay.setDate(today.getDate() + 2);
         </div>
 </div>
    <div className=' w-full    py-4 h-full bg-white flex  justify-center flex-wrap'>
-   <Card/>
 
-     <Card/>
+    
 
-     <Card/>
+    {hotels?.map((hotel)=>{
+      return <Link key={hotel._id}  href={'http://localhost:3000/rooms/'+hotel._id}> <Card hotelProps={hotel}/></Link>
+    })} 
+  
 
-     <Card/>
+    
 
-     <Card/>
-     <Card/>
-     <Card/>
-     <Card/>
      
    </div>
    

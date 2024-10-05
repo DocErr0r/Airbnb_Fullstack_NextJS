@@ -1,4 +1,5 @@
 import { errorHandler } from "@/app/middleware/errorhandler";
+import { userAuth } from "@/app/middleware/userauth";
 import { Hotel } from "@/schema/hotelSchema";
 
 export const POST = async(req:Request,{params}:{params:{
@@ -7,7 +8,7 @@ export const POST = async(req:Request,{params}:{params:{
 
     const {id } = params;
     console.log(id);
-const {user,name,cleanliness,
+const {cleanliness,
 accuracy,
 checkin,
 communication,
@@ -15,7 +16,7 @@ location,
 value, 
 comment} = await req.json();
 
-if(!user || !name || !cleanliness || !accuracy || !checkin || !communication || !location ||!value || !comment){
+if( !cleanliness || !accuracy || !checkin || !communication || !location ||!value || !comment){
     return errorHandler("Please Fill All Fields",403,false);
 }
 
@@ -26,7 +27,37 @@ try{
     return errorHandler("hotel not found",403,false);
  }
 
- hotel.reviews.push({user,name,cleanliness,
+
+ const user = await userAuth();
+
+ if(!user){
+    return errorHandler("User not found",403,false);
+ }
+
+ const userid:string = user.id
+ const username:string = user.username
+
+ 
+
+
+ 
+
+
+ let isReviewed = false;
+ 
+for(let i =0;i<hotel.reviews.length;i++){
+    if(hotel.reviews[i].userid === userid){
+        isReviewed = true;
+        hotel.reviews[i].accuracy = accuracy
+        hotel.reviews[i].cleanliness = cleanliness
+        hotel.reviews[i].communication = communication
+        hotel.reviews[i].location = location
+        hotel.reviews[i].value = value
+        hotel.reviews[i].comment = comment
+    }
+}
+if(!isReviewed){
+ hotel.reviews.push({userid,username,cleanliness,
     accuracy,
     checkin,
     communication,
@@ -34,7 +65,7 @@ try{
     value, 
     comment})
 
-
+ }
     let cleanlinessrating  = 0;
     let accuracyrating = 0;
     let locationrating = 0;
@@ -68,7 +99,7 @@ try{
    
 
 
-
+    hotel.numofreview = hotel.reviews.length
 
 
     const updatedHotel = await Hotel.findByIdAndUpdate(id,hotel,{
